@@ -213,19 +213,23 @@ body {
 
 body {
   font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
-  body li a {
+  body nav #hostname {
+    color: black;
+    font-size: 1.6em;
+    font-weight: bold; }
+  body nav li a {
     font-size: 1.3em;
     color: #AAA;
     font-weight: bold; }
-    body li a:hover {
+    body nav li a:hover {
       color: #777; }
-  body li .nav-selected {
-    color: #222; }
-    body li .nav-selected:hover {
-      color: #222; }
-  body .hostname {
-    font-size: 1.2em;
-    color: #FFF; }
+  body nav li .nav-selected {
+    color: #444; }
+    body nav li .nav-selected:hover {
+      color: #444; }
+  body nav #footer-span {
+    font-size: 0.8em;
+    color: #CCC; }
 
 .side-nav {
   position: fixed;
@@ -247,14 +251,22 @@ body {
     border-right: 1px solid #CCC; }
   .side-nav img {
     width: 100%;
-    margin: 10px 0 0 0; }
+    margin: 10px 0 60px 0; }
+  .side-nav #hostname {
+    margin: 10px 0 10px 20px; }
   .side-nav ul {
     list-style: none;
-    margin: 50px 0 0 20px; }
+    margin: 0 0 0 20px; }
     .side-nav ul li a {
       text-decoration: none;
       display: block;
       text-align: left; }
+  .side-nav #footer-span {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    text-align: center; }
 
 body .page-wrapper {
   height: 100%; }

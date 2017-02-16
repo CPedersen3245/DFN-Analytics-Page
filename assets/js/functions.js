@@ -5,6 +5,7 @@ $( document ).ready(function() {
   $('#performance-link').click({scrollTo: '#performance-wrapper'}, scrollToDiv);
   $('#analytics-link').click({scrollTo: '#analytics-wrapper'}, scrollToDiv);
   $('#gallery-link').addClass('nav-selected');
+  $("html, body").scrollTop('.nav-selected');
 
   function scrollToDiv(event) {
     $('#nav-links li a').each(function(index) {
