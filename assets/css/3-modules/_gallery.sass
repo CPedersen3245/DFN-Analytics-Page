@@ -1,0 +1,92 @@
+#gallery-wrapper
+  h1
+    margin: 0 0px 0px 5px
+    height: 7%
+
+  .gallery-item
+    position: relative
+    width: 100%
+    height: 93%
+    padding: 0 15%
+    +box-sizing(border-box)
+
+    .gallery-w-padding
+      height: 100%
+      width: 100%
+      box-shadow: 3px 3px 1px #888888
+      border: 3px solid #C1C1C1
+      background-color: #FFFFFF
+      +box-sizing(border-box)
+
+      .gallery-photo-area
+        position: relative
+        height: 85%
+        overflow-y: scroll
+        display: flex
+        align-items: center
+        justify-content: center
+        background-color: #FFFFFF
+        +box-sizing(border-box)
+
+        ul
+          position: absolute
+          top: 2px
+          @media screen and (max-width: 924px)
+            width: 354.219px
+          @media screen and (min-width: 925px) and (max-width: 1092px)
+            width: 472.5px
+          @media screen and (min-width: 1093px) and (max-width: 1261px)
+            width: 590.125px
+          @media screen and (min-width: 1262px) and (max-width: 1429px)
+            width: 708.406px
+
+
+        li
+          display: inline-block
+          margin: 10px
+          +border-radius(5px)
+          height: 98px
+
+          a
+            display: inline-block
+            height: 100%
+
+            img
+              height: 100%
+              +border-radius(5px)
+              +box-sizing(border-box)
+
+              &:hover
+                border: 3px solid deepskyblue
+
+      .gallery-date-area
+        width: 100%
+        +calc(height, '15% - 3px')
+        +box-sizing(border-box)
+        padding: 10px
+        margin-top: 3px
+        background-color: #FFFFFF
+        position: relative
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: center
+
+        label
+          margin-right: 5px
+
+        #gallery-date-selector
+          width: 120px
+          margin-right: 20px
+
+        #gallery-time-selector
+          width: 120px
+
+        &:before
+          content: ""
+          height: 1px
+          width: 90%
+          position: absolute
+          top: 0
+          left: 5%
+          background-color: #C1C1C1
