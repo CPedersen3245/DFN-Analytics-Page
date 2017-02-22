@@ -1,7 +1,7 @@
 #gallery-wrapper
   h1
-    margin: 0 0px 0px 5px
-    height: 7%
+    margin: 5px 0px 5px 5px
+    +calc(height, '7% - 10px')
 
   .gallery-item
     position: relative
@@ -13,12 +13,14 @@
     .gallery-w-padding
       height: 100%
       width: 100%
-      box-shadow: 3px 3px 1px #888888
-      border: 3px solid #C1C1C1
+      box-shadow: 3px 3px 1px #C1C1C1
+      border: 3px solid #919191
       background-color: #FFFFFF
       +box-sizing(border-box)
+      +border-radius(3px)
 
       .gallery-photo-area
+        top: 2px
         position: relative
         height: 85%
         overflow-y: scroll
@@ -43,18 +45,19 @@
 
         li
           display: inline-block
-          margin: 10px
+          margin: 2px
           +border-radius(5px)
-          height: 98px
+          width: 114px
 
           a
             display: inline-block
-            height: 100%
+            width: 100%
 
             img
-              height: 100%
+              width: 100%
               +border-radius(5px)
               +box-sizing(border-box)
+              border: 2px solid #C1C1C1
 
               &:hover
                 border: 3px solid deepskyblue
@@ -64,23 +67,23 @@
         +calc(height, '15% - 3px')
         +box-sizing(border-box)
         padding: 10px
-        margin-top: 3px
+        margin-top: 4px
         background-color: #FFFFFF
         position: relative
         display: flex
-        flex-direction: row
+        flex-flow: row wrap
         align-items: center
         justify-content: center
 
         label
+          font-size: 1.1em
           margin-right: 5px
 
-        #gallery-date-selector
-          width: 120px
+        .datetimepicker
+          font-size: 1.1em
+          width: 150px
           margin-right: 20px
-
-        #gallery-time-selector
-          width: 120px
+          border: 1px solid #C1C1C1
 
         &:before
           content: ""
@@ -90,3 +93,6 @@
           top: 0
           left: 5%
           background-color: #C1C1C1
+
+.ui_tpicker_time_label
+  float: right
