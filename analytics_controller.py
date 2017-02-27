@@ -4,7 +4,7 @@ from datetime import datetime
 def findPictures(startdate, enddate):
     error = False
 
-    if not startdate and not enddate:
+    if not startdate or not enddate:
         error = True
     else:
         data = {}

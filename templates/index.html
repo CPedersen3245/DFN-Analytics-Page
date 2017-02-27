@@ -3,8 +3,8 @@
 <head>
     <title>DFN Analytics Page</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/static/img/favicons/favicon.ico">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
     <link rel="stylesheet" href="/static/css/main.css"/>
     <link rel="stylesheet" href="/static/css/lightbox.css"/>
     <link rel="stylesheet" type="text/css" media="all" href="static/js/jquery-ui-1.12.1/jquery-ui.css"/>
@@ -37,13 +37,15 @@
                         <ul id="photo-list"></ul>
                     </div>
                     <div class="gallery-date-area">
-                        <div>
-                            <label for="gallery-start-date-selector">Start:</label>
-                            <input type="text" id="gallery-start-date-selector" class="datetimepicker" readonly="readonly">
-                        </div>
-                        <div>
-                            <label for="gallery-end-date-selector">End:</label>
-                            <input type="text" id="gallery-end-date-selector" class="datetimepicker" readonly="readonly">
+                        <div class="gallery-date-area-left">
+                            <div>
+                                <label for="gallery-start-date-selector">Start:</label>
+                                <input type="text" id="gallery-start-date-selector" class="datetimepicker" readonly="readonly">
+                            </div>
+                            <div>
+                                <label for="gallery-end-date-selector">End:</label>
+                                <input type="text" id="gallery-end-date-selector" class="datetimepicker" readonly="readonly">
+                            </div>
                         </div>
                         <button type="button" class="basic-button" id="find-pictures-button">GET IMAGES</button>
                     </div>

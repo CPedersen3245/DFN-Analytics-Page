@@ -6,9 +6,25 @@ body
       height: 100%
       margin-left: $navbarwidth
 
+      @media screen and (max-width: 768px)
+
+
       .widget-wrapper
         height: 100%
         background-color: #F2F2F2
         padding: 10px 10px 60px 10px
         +box-sizing(border-box)
         overflow: auto
+
+//Vertical mobile styles
+@media screen and (max-width: 550px)
+  body
+    .page-wrapper
+      height: 85%
+      .content-wrapper
+        height: 100%
+        margin-left: 0
+        margin-top: 15vh
+
+        .widget-wrapper
+          margin-top: 15vh

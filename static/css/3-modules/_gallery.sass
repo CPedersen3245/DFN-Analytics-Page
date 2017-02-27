@@ -33,6 +33,7 @@
         ul
           position: absolute
           top: 2px
+          //Gallery width queries
           @media screen and (max-width: 924px)
             width: 354.219px
           @media screen and (min-width: 925px) and (max-width: 1092px)
@@ -42,25 +43,24 @@
           @media screen and (min-width: 1262px) and (max-width: 1429px)
             width: 708.406px
 
-
-        li
-          display: inline-block
-          margin: 2px
-          +border-radius(5px)
-          width: 114px
-
-          a
+          li
             display: inline-block
-            width: 100%
+            margin: 2px
+            +border-radius(5px)
+            width: 114px
 
-            img
+            a
+              display: inline-block
               width: 100%
-              +border-radius(5px)
-              +box-sizing(border-box)
-              border: 2px solid #C1C1C1
 
-              &:hover
-                border: 3px solid deepskyblue
+              img
+                width: 100%
+                +border-radius(5px)
+                +box-sizing(border-box)
+                border: 2px solid #C1C1C1
+
+                &:hover
+                  border: 3px solid deepskyblue
 
       .gallery-date-area
         width: 100%
@@ -71,28 +71,64 @@
         background-color: #FFFFFF
         position: relative
         display: flex
-        flex-flow: row wrap
+        flex-flow: row nowrap
         align-items: center
         justify-content: center
 
-        label
-          font-size: 1.1em
-          margin-right: 5px
+        .gallery-date-area-left
+          display: flex
+          flex-flow: column wrap
+          align-items: center
+          justify-content: center
+          padding: 5px
+          margin-right: 50px
 
-        .datetimepicker
-          font-size: 1.1em
-          width: 150px
-          margin-right: 20px
-          border: 1px solid #C1C1C1
+          div
+            width: 100%
+            display: flex
+            flex-direction: row
+            align-items: center
+            justify-content: center
 
-        &:before
-          content: ""
-          height: 1px
-          width: 90%
-          position: absolute
-          top: 0
-          left: 5%
-          background-color: #C1C1C1
+            label
+              display: inline-block
+              width: 50px
+              float: left
+              font-size: 1.1em
+              margin-right: 5px
 
-.ui_tpicker_time_label
-  float: right
+            .datetimepicker
+              font-size: 1.1em
+              width: 65%
+              border: 1px solid #C1C1C1
+
+            &:before
+              content: ""
+              height: 1px
+              width: 90%
+              position: absolute
+              top: 0
+              left: 5%
+              background-color: #C1C1C1
+
+//Vertical mobile styles
+@media screen and (max-width: 550px)
+  #gallery-wrapper
+
+
+    .gallery-item
+
+      .gallery-w-padding
+
+        .gallery-photo-area
+
+          ul
+            width: 95%
+
+            li
+              width: 31%
+
+        .gallery-date-area
+
+          .gallery-date-area-left
+            margin-right: 0

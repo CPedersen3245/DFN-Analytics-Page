@@ -6,6 +6,7 @@
   width: $navbarwidth
   height: 100%
   padding: 0 10px
+  background-color: #FFF
   +box-sizing(border-box)
 
   &::after
@@ -28,7 +29,6 @@
     margin: 0 0 0 20px
 
     li
-
       a
         text-decoration: none
         display: block
@@ -40,3 +40,54 @@
     left: 0
     bottom: 10px
     text-align: center
+
+
+//Vertical mobile styles
+@media screen and (max-width: 550px)
+  .side-nav
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 100
+    height: 15%
+    width: 100%
+    padding: 10px 20px
+    +box-sizing(border-box)
+    border-bottom: 1px solid #C1C1C1
+    +clearfix()
+
+    img
+      position: absolute
+      top: 50%
+      +transform(translate(0, -60%))
+      width: 30%
+      margin: 0
+
+    ul
+      position: absolute
+      top: 50%
+      right: 5%
+      +transform(translate(0, -50%))
+      float: right
+      list-style-type: none
+      margin: 0
+      padding: 0
+
+      li
+        display: inline
+        margin-right: 5px
+
+        a
+          display: inline
+          text-decoration: none
+          text-align: left
+          font-size: 3.5vw
+
+    #footer-span
+      display: none
+
+    #hostname
+      position: absolute
+      top: 0px
+      right: 10px
+      font-size: 0.9em
