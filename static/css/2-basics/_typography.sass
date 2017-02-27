@@ -1,5 +1,9 @@
+button
+  font-size: 1em
+
 body
   font-family: 'Roboto', sans-serif
+  font-size: 20px
 
   .widget-wrapper
     h1
@@ -9,12 +13,12 @@ body
 
     #hostname
       color: black
-      font-size: 1.6em
+      font-size: 25px
       font-weight: bold
 
     li
       a
-        font-size: 1.3em
+        font-size: 20px
         color: #AAA
         font-weight: bold
 
@@ -28,5 +32,23 @@ body
           color: #444
 
     #footer-span
-      font-size: 0.8em
+      font-size: 0.6em
       color: #CCC
+
+//Vertical mobile styles
+@media screen and (max-width: 550px)
+  body
+    font-family: 'Roboto', sans-serif
+    font-size: 14px
+
+    nav
+
+      #hostname
+        color: black
+        font-size: 15px
+
+//Horizontal mobile styles
+@media screen and (max-height: 450px)
+  body
+    font-family: 'Roboto', sans-serif
+    font-size: 14px

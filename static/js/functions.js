@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+    //*****Code for fixing keyboard reize issue on mobile*****//
+    $(window).bind('resize', function(e){
+        $('body').css('height', '100vh');
+        $('body').css('width', '100vw');
+    });
+
     //*****Code for scrolling links*****//
     $('#gallery-link').click({scrollTo: '#gallery-wrapper'}, scrollToDiv);
     $('#performance-link').click({scrollTo: '#performance-wrapper'}, scrollToDiv);
@@ -12,6 +18,7 @@ $(document).ready(function () {
             $(this).removeClass('nav-selected');
         });
         $(event.target).addClass('nav-selected');
+
         $('html, body').animate({
             'scrollTop': $(event.data.scrollTo).position().top
         });

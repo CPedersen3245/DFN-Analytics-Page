@@ -209,16 +209,20 @@ html, body {
 body {
   overflow: hidden; }
 
+button {
+  font-size: 1em; }
+
 body {
-  font-family: "Roboto", sans-serif; }
+  font-family: "Roboto", sans-serif;
+  font-size: 20px; }
   body .widget-wrapper h1 {
     font-size: 3.5vh; }
   body nav #hostname {
     color: black;
-    font-size: 1.6em;
+    font-size: 25px;
     font-weight: bold; }
   body nav li a {
-    font-size: 1.3em;
+    font-size: 20px;
     color: #AAA;
     font-weight: bold; }
     body nav li a:hover {
@@ -228,9 +232,20 @@ body {
     body nav li .nav-selected:hover {
       color: #444; }
   body nav #footer-span {
-    font-size: 0.8em;
+    font-size: 0.6em;
     color: #CCC; }
 
+@media screen and (max-width: 550px) {
+  body {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px; }
+    body nav #hostname {
+      color: black;
+      font-size: 15px; } }
+@media screen and (max-height: 450px) {
+  body {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px; } }
 button {
   padding: 10px 20px;
   color: white;
@@ -240,14 +255,14 @@ button {
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   border-radius: 3px;
-  box-shadow: 0px 5px 1px #C1C1C1;
-  font-size: 2vh;
-  white-space: nowrap; }
+  box-shadow: 0px 3px 1px #C1C1C1;
+  white-space: nowrap;
+  margin: 2px; }
   button:hover {
     background-color: #B93C18; }
   button:active {
     transform: translateY(2px);
-    box-shadow: 0px 3px 1px #C1C1C1; }
+    box-shadow: 0px 1px 1px #C1C1C1; }
   button:focus {
     outline: 0; }
 
@@ -272,7 +287,7 @@ button {
     border-right: 1px solid #CCC; }
   .side-nav img {
     width: 100%;
-    margin: 10px 0 60px 0; }
+    margin: 10px 0 7vh 0; }
   .side-nav #hostname {
     margin: 10px 0 10px 20px; }
   .side-nav ul {
@@ -342,8 +357,7 @@ button {
     .side-nav #hostname {
       position: absolute;
       top: 0px;
-      right: 10px;
-      font-size: 0.9em; } }
+      right: 10px; } }
 #gallery-wrapper h1 {
   margin: 5px 0px 5px 5px;
   height: -moz-calc(7% - 10px);
@@ -442,21 +456,20 @@ button {
         align-items: center;
         justify-content: center;
         padding: 5px;
-        margin-right: 50px; }
+        margin-right: 20px; }
         #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div {
           width: 100%;
           display: flex;
           flex-direction: row;
           align-items: center;
-          justify-content: center; }
+          justify-content: center;
+          margin: 1px; }
           #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div label {
             display: inline-block;
             width: 50px;
             float: left;
-            font-size: 1.1em;
-            margin-right: 5px; }
+            margin-right: 2px; }
           #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div .datetimepicker {
-            font-size: 1.1em;
             width: 65%;
             border: 1px solid #C1C1C1; }
           #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div:before {
@@ -475,12 +488,23 @@ button {
       width: 31%; }
   #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left {
     margin-right: 0; } }
-body .page-wrapper {
+@media screen and (max-height: 450px) {
+  #gallery-wrapper h1 {
+    display: none; }
+  #gallery-wrapper .gallery-item {
+    height: 100%; }
+    #gallery-wrapper .gallery-item .gallery-w-padding .gallery-photo-area ul {
+      width: 95%; }
+      #gallery-wrapper .gallery-item .gallery-w-padding .gallery-photo-area ul li {
+        width: 31%; }
+    #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left {
+      margin-right: 0; } }
+html .page-wrapper, body .page-wrapper {
   height: 100%; }
-  body .page-wrapper .content-wrapper {
+  html .page-wrapper .content-wrapper, body .page-wrapper .content-wrapper {
     height: 100%;
     margin-left: 230px; }
-    body .page-wrapper .content-wrapper .widget-wrapper {
+    html .page-wrapper .content-wrapper .widget-wrapper, body .page-wrapper .content-wrapper .widget-wrapper {
       height: 100%;
       background-color: #F2F2F2;
       padding: 10px 10px 60px 10px;
@@ -498,5 +522,8 @@ body .page-wrapper {
       margin-top: 15vh; }
       body .page-wrapper .content-wrapper .widget-wrapper {
         margin-top: 15vh; } }
+@media screen and (max-height: 450px) {
+  body .page-wrapper .content-wrapper .widget-wrapper {
+    padding: 10px; } }
 
 /*# sourceMappingURL=main.css.map */

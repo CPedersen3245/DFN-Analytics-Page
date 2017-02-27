@@ -81,7 +81,7 @@
           align-items: center
           justify-content: center
           padding: 5px
-          margin-right: 50px
+          margin-right: 20px
 
           div
             width: 100%
@@ -89,16 +89,16 @@
             flex-direction: row
             align-items: center
             justify-content: center
+            margin: 1px
 
             label
               display: inline-block
               width: 50px
               float: left
-              font-size: 1.1em
-              margin-right: 5px
+              margin-right: 2px
+
 
             .datetimepicker
-              font-size: 1.1em
               width: 65%
               border: 1px solid #C1C1C1
 
@@ -115,8 +115,31 @@
 @media screen and (max-width: 550px)
   #gallery-wrapper
 
+    .gallery-item
+
+      .gallery-w-padding
+
+        .gallery-photo-area
+
+          ul
+            width: 95%
+
+            li
+              width: 31%
+
+        .gallery-date-area
+
+          .gallery-date-area-left
+            margin-right: 0
+
+//Horizontal mobile styles
+@media screen and (max-height: 450px)
+  #gallery-wrapper
+    h1
+      display: none
 
     .gallery-item
+      height: 100%
 
       .gallery-w-padding
 
