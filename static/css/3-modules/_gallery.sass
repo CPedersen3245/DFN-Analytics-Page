@@ -1,8 +1,4 @@
 #gallery-wrapper
-  h1
-    margin: 5px 0px 5px 5px
-    +calc(height, '7% - 10px')
-
   .gallery-item
     position: relative
     width: 100%
@@ -13,54 +9,63 @@
     .gallery-w-padding
       height: 100%
       width: 100%
+      overflow: hidden
       box-shadow: 3px 3px 1px #C1C1C1
       border: 3px solid #919191
       background-color: #FFFFFF
       +box-sizing(border-box)
       +border-radius(3px)
 
-      .gallery-photo-area
-        top: 2px
-        position: relative
+      .gallery-slider
         height: 85%
-        overflow: auto
+        width: 99999999px
+        overflow: hidden
         display: flex
-        align-items: center
-        justify-content: center
-        background-color: #FFFFFF
-        +box-sizing(border-box)
+        flex-flow: row nowrap
+        align-items: flex-start
+        justify-content: flex-start
 
-        ul
-          position: absolute
-          top: 2px
-          //Gallery width queries
-          @media screen and (max-width: 954px)
-            width: 354.219px
-          @media screen and (min-width: 955px) and (max-width: 1110px)
-            width: 472.5px
-          @media screen and (min-width: 1111px) and (max-width: 1261px)
-            width: 590.125px
-          @media screen and (min-width: 1262px) and (max-width: 1429px)
-            width: 708.406px
+        .gallery-photo-area
+          position: relative
+          height: 100%
+          overflow: auto
+          display: inline-flex
+          align-items: center
+          justify-content: center
+          background-color: #FFFFFF
+          +box-sizing(border-box)
 
-          li
-            display: inline-block
-            margin: 2px
-            +border-radius(5px)
-            width: 114px
+          ul
+            position: absolute
+            top: 2px
+            //Gallery width queries
+            @media screen and (max-width: 954px)
+              width: 354.219px
+            @media screen and (min-width: 955px) and (max-width: 1110px)
+              width: 472.5px
+            @media screen and (min-width: 1111px) and (max-width: 1261px)
+              width: 590.125px
+            @media screen and (min-width: 1262px) and (max-width: 1429px)
+              width: 708.406px
 
-            a
+            li
               display: inline-block
-              width: 100%
+              margin: 2px
+              +border-radius(5px)
+              width: 114px
 
-              img
+              a
+                display: inline-block
                 width: 100%
-                +border-radius(5px)
-                +box-sizing(border-box)
-                border: 2px solid #C1C1C1
 
-                &:hover
-                  border: 3px solid deepskyblue
+                img
+                  width: 100%
+                  +border-radius(5px)
+                  +box-sizing(border-box)
+                  border: 2px solid #C1C1C1
+
+                  &:hover
+                    border: 3px solid deepskyblue
 
       .gallery-date-area
         width: 100%
@@ -119,13 +124,15 @@
 
       .gallery-w-padding
 
-        .gallery-photo-area
+        .gallery-slider
 
-          ul
-            width: 95%
+          .gallery-photo-area
 
-            li
-              width: 31%
+            ul
+              width: 95%
+
+              li
+                width: 31%
 
         .gallery-date-area
 
@@ -143,13 +150,15 @@
 
       .gallery-w-padding
 
-        .gallery-photo-area
+        .gallery-slider
 
-          ul
-            width: 95%
+          .gallery-photo-area
 
-            li
-              width: 31%
+            ul
+              width: 95%
+
+              li
+                width: 31%
 
         .gallery-date-area
 
