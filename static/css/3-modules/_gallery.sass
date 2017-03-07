@@ -6,7 +6,19 @@
     padding: 0 13%
     +box-sizing(border-box)
 
+    .gallery-arrow
+      position: absolute
+      top: 40%
+      z-index: 10
+
+    #gallery-left-arrow
+      left: 6%
+
+    #gallery-right-arrow
+      right: 6%
+
     .gallery-w-padding
+      position: relative
       height: 100%
       width: 100%
       overflow: hidden
@@ -16,20 +28,25 @@
       +box-sizing(border-box)
       +border-radius(3px)
 
-      .gallery-slider
-        height: 85%
-        width: 99999999px
-        overflow: hidden
+      .gallery-header
+        height: 30px
+        width: 100%
+        padding: 2px 10%
+        +box-sizing(border-box)
         display: flex
-        flex-flow: row nowrap
-        align-items: flex-start
-        justify-content: flex-start
+        align-items: center
+        justify-content: center
+        //border-bottom: 1px solid #C1C1C1
+
+      .gallery-slider
+        +calc('height', '85% - 30px')
+        overflow: hidden
+        overflow-y: scroll
 
         .gallery-photo-area
+          display: none
           position: relative
           height: 100%
-          overflow: auto
-          display: inline-flex
           align-items: center
           justify-content: center
           background-color: #FFFFFF
@@ -68,13 +85,13 @@
                     border: 3px solid deepskyblue
 
       .gallery-date-area
+        position: relative
         width: 100%
         +calc(height, '15% - 3px')
         +box-sizing(border-box)
         padding: 10px
         margin-top: 4px
         background-color: #FFFFFF
-        position: relative
         display: flex
         flex-flow: row nowrap
         align-items: center

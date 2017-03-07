@@ -239,6 +239,10 @@ body {
     font-size: 0.6em;
     color: #CCC; }
 
+#gallery-feedback-span {
+  color: #C1C1C1;
+  font-size: 15px; }
+
 @media screen and (max-width: 550px) {
   body {
     font-family: "Roboto", sans-serif;
@@ -370,7 +374,16 @@ button {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
+  #gallery-wrapper .gallery-item .gallery-arrow {
+    position: absolute;
+    top: 40%;
+    z-index: 10; }
+  #gallery-wrapper .gallery-item #gallery-left-arrow {
+    left: 6%; }
+  #gallery-wrapper .gallery-item #gallery-right-arrow {
+    right: 6%; }
   #gallery-wrapper .gallery-item .gallery-w-padding {
+    position: relative;
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -384,19 +397,26 @@ button {
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px; }
-    #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider {
-      height: 85%;
-      width: 99999999px;
-      overflow: hidden;
+    #gallery-wrapper .gallery-item .gallery-w-padding .gallery-header {
+      height: 30px;
+      width: 100%;
+      padding: 2px 10%;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
       display: flex;
-      flex-flow: row nowrap;
-      align-items: flex-start;
-      justify-content: flex-start; }
+      align-items: center;
+      justify-content: center; }
+    #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider {
+      height: -moz-calc(85% - 30px);
+      height: -webkit-calc(85% - 30px);
+      height: calc(85% - 30px);
+      overflow: hidden;
+      overflow-y: scroll; }
       #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area {
+        display: none;
         position: relative;
         height: 100%;
-        overflow: auto;
-        display: inline-flex;
         align-items: center;
         justify-content: center;
         background-color: #FFFFFF;
@@ -442,6 +462,7 @@ button {
                 #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area ul li a img:hover {
                   border: 3px solid deepskyblue; }
     #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area {
+      position: relative;
       width: 100%;
       height: -moz-calc(15% - 3px);
       height: -webkit-calc(15% - 3px);
@@ -452,7 +473,6 @@ button {
       padding: 10px;
       margin-top: 4px;
       background-color: #FFFFFF;
-      position: relative;
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
@@ -519,9 +539,6 @@ html .page-wrapper, body .page-wrapper {
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       overflow: auto; }
-
-::-webkit-scrollbar {
-  display: none; }
 
 @media screen and (max-width: 550px) {
   body .page-wrapper {

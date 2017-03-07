@@ -39,27 +39,24 @@ $(document).ready(function () {
         "static/images/sample/17.jpg", "static/images/sample/18.jpg", "static/images/sample/19.jpg", "static/images/sample/20.jpg",
         "static/images/sample/21.jpg", "static/images/sample/22.jpg", "static/images/sample/23.jpg", "static/images/sample/24.jpg"];
 
-    //Code for scrolling between photo lists
-    var photoLists = [];
-    var currPhotoListIndex = 0;
-
-    //*****HTML Writing*****//
+    //*****HTML Writing Photo Areas*****//
     //For each x photos, make a new photo area
     var x = 20;
+    var photoLists = [];
+    var currPhotoListIndex = 0;
     var i, j = 0;
     var listnumber = 0;
     var length = pathArray.length;
 
     while (j < length) {
         photoLists.push("GPA" + listnumber);
-        console.log(photoLists);
         $(".gallery-slider").append(
                 '<div class="gallery-photo-area" id="GPA' + listnumber + '">' +
                     '<ul id="photo-list-' + listnumber + '"></ul>'
         );
         for (i = 0; i < x; i++) {
             if(j < length) {
-                $("#photo-list-" + listnumber).append(
+                $('#photo-list-' + listnumber).append(
                     '<li>' +
                         '<a href=' + pathArray[j] + ' data-lightbox="gallery">' +
                             '<img src=' + pathArray[j] + '>' +
@@ -69,20 +66,33 @@ $(document).ready(function () {
                 j++;
             }
         }
-        $(".gallery-w-padding").append(
+        $('.gallery-w-padding').append(
             '</div>'
         );
         listnumber++;
     }
+    scrollToImageList({data: {dIndex: 0}});
 
     //*****CSS Writing*****//
     function initCSS() {
-        $(".gallery-photo-area").css('width', ($(".gallery-w-padding").width() + 'px'));
+        $('.gallery-photo-area').css('width', ($(".gallery-w-padding").width() + 'px'));
     }
     initCSS();
-
     $(window).resize(initCSS);
 
+    //*****Code for scrolling between photo lists*****//
+    function scrollToImageList(event) {
+        var photoAreaDisplayID = '#GPA' + (currPhotoListIndex + event.data.dIndex);
+        if ($(photoAreaDisplayID).length != 0) {
+            currPhotoListIndex += event.data.dIndex;
+            $('.gallery-photo-area').css('display', 'none');
+            $(photoAreaDisplayID).css('display', 'flex');
+            $('#gallery-feedback-span').text('Page ' + (currPhotoListIndex+1) + ' of ' + $('.gallery-photo-area').length);
+        }
+    }
+
+    $('#gallery-left-arrow').click({dIndex: -1}, scrollToImageList);
+    $('#gallery-right-arrow').click({dIndex: 1}, scrollToImageList);
 
     //*****Datepicker setup*****//
     $('#gallery-start-date-selector').datetimepicker({

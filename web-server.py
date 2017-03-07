@@ -1,4 +1,4 @@
-import web, os
+import web
 import analytics_controller
 
 web.config.debug = False
