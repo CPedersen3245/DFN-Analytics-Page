@@ -1,31 +1,8 @@
 $(document).ready(function () {
 
-    //*****Code for fixing keyboard resize issue on mobile*****//
-    $(window).bind('resize', function (e) {
-        $('body').css('height', '100vh');
-        $('body').css('width', '100vw');
-    });
-
-    //*****Code for scrolling links*****//
-    $('#gallery-link').click({scrollTo: '#gallery-wrapper'}, scrollToDiv);
-    $('#performance-link').click({scrollTo: '#performance-wrapper'}, scrollToDiv);
-    $('#analytics-link').click({scrollTo: '#analytics-wrapper'}, scrollToDiv);
-    $('#gallery-link').addClass('nav-selected');
-    $("html, body").scrollTop('.nav-selected');
-
-    function scrollToDiv(event) {
-        $('#nav-links li a').each(function (index) {
-            $(this).removeClass('nav-selected');
-        });
-        $(event.target).addClass('nav-selected');
-
-        $('html, body').animate({
-            'scrollTop': $(event.data.scrollTo).position().top
-        });
-    }
-
-    //*****Code for Lightbox2 image gallery*****//
-    //*****Image setup*****//
+    /*******************************
+     *          GLOBALS            *
+     *******************************/
     var pathArray = ["static/images/sample/1.jpg", "static/images/sample/2.jpg", "static/images/sample/3.jpg", "static/images/sample/4.jpg",
         "static/images/sample/5.jpg", "static/images/sample/6.jpg", "static/images/sample/7.jpg", "static/images/sample/8.jpg",
         "static/images/sample/9.jpg", "static/images/sample/10.jpg", "static/images/sample/11.jpg", "static/images/sample/12.jpg",
@@ -39,48 +16,150 @@ $(document).ready(function () {
         "static/images/sample/17.jpg", "static/images/sample/18.jpg", "static/images/sample/19.jpg", "static/images/sample/20.jpg",
         "static/images/sample/21.jpg", "static/images/sample/22.jpg", "static/images/sample/23.jpg", "static/images/sample/24.jpg"];
 
-    //*****HTML Writing Photo Areas*****//
-    //For each x photos, make a new photo area
-    var x = 20;
-    var photoLists = [];
+    //Keeps track of where in the gallery the user is
     var currPhotoListIndex = 0;
-    var i, j = 0;
-    var listnumber = 0;
-    var length = pathArray.length;
 
-    while (j < length) {
-        photoLists.push("GPA" + listnumber);
-        $(".gallery-slider").append(
-                '<div class="gallery-photo-area" id="GPA' + listnumber + '">' +
-                    '<ul id="photo-list-' + listnumber + '"></ul>'
-        );
-        for (i = 0; i < x; i++) {
-            if(j < length) {
-                $('#photo-list-' + listnumber).append(
-                    '<li>' +
-                        '<a href=' + pathArray[j] + ' data-lightbox="gallery">' +
-                            '<img src=' + pathArray[j] + '>' +
-                        '</a>' +
-                    '</li>'
-                );
-                j++;
-            }
-        }
-        $('.gallery-w-padding').append(
-            '</div>'
-        );
-        listnumber++;
+    //Number of photos per gallery page
+    var picturesPerPage = 20;
+
+    //*****jQuery element listings*****//
+    var startDatePicker = $('#gallery-start-date-selector');
+    var endDatePicker = $('#gallery-end-date-selector');
+    var findPicturesButton = $('#find-pictures-button');
+
+    /*******************************
+     *     Setting up callbacks    *
+     *******************************/
+    $(findPicturesButton).click(findPictures);
+    $('#gallery-link').click({scrollTo: '#gallery-wrapper'}, scrollToDiv);
+    $('#performance-link').click({scrollTo: '#performance-wrapper'}, scrollToDiv);
+    $('#analytics-link').click({scrollTo: '#analytics-wrapper'}, scrollToDiv);
+    $('#gallery-left-arrow').click({dIndex: -1}, scrollToImageList);
+    $('#gallery-right-arrow').click({dIndex: 1}, scrollToImageList);
+
+    /*******************************
+     *        Responsiveness       *
+     *******************************/
+
+    //*****Fixing keyboard resize issue on mobile*****//
+    $(window).bind('resize', function (e) {
+        $('body').css('height', '100vh');
+        $('body').css('width', '100vw');
+    });
+
+    /*
+     *
+     *  Name: scrollToDiv
+     *
+     *  Purpose: Scrolls to the selected div on the nav.
+     *
+     *  Params: event: a JSON with information about the click event. Contains scrollTo,
+     *  the wrapper to scroll the body to.
+     *
+     *  Return: none
+     *
+     *  Notes: Should only be called as a callback for the click event on the nav links.
+     *
+     */
+    function scrollToDiv(event) {
+        $('#nav-links li a').each(function (index) {
+            $(this).removeClass('nav-selected');
+        });
+        $(event.target).addClass('nav-selected');
+
+        $('html, body').animate({
+            'scrollTop': $(event.data.scrollTo).position().top
+        });
     }
-    scrollToImageList({data: {dIndex: 0}});
 
-    //*****CSS Writing*****//
-    function initCSS() {
+    /*
+     *
+     *  Name: resizePhotoArea
+     *
+     *  Purpose: Enables photo-areas to be responsive
+     *
+     *  Params: none
+     *
+     *  Return: none
+     *
+     *  Notes: This method is tied to the window.resize method, but is also called on page load.
+     *
+     */
+    function resizePhotoArea() {
         $('.gallery-photo-area').css('width', ($(".gallery-w-padding").width() + 'px'));
     }
-    initCSS();
-    $(window).resize(initCSS);
+    $(window).resize(resizePhotoArea);
 
-    //*****Code for scrolling between photo lists*****//
+    /*******************************
+     *        Image Gallery        *
+     *******************************/
+    //Configuring Lightbox options
+    lightbox.option({
+        'alwaysShowNavOnTouchDevices' : true,
+        'fadeduration': 1000,
+        'imageFadeDuration': 400,
+        'wrapAround': true
+    });
+
+    /*
+     *
+     *  Name: generateGallery
+     *
+     *  Purpose: Generates the images gallery, using the array of filenames currently in RAM
+     *
+     *  Params: none
+     *
+     *  Return: none
+     *
+     *  Notes: Should only be called as a success callback from the /findpictures ajax request.
+     *
+     */
+    function generateGallery() {
+        var photoLists = [];
+        var i, j = 0;
+        var currListNumber = 0;
+
+        while (j < pathArray.length) {
+            photoLists.push("GPA" + currListNumber);
+            $(".gallery-slider").append(
+                    '<div class="gallery-photo-area" id="GPA' + currListNumber + '">' +
+                        '<ul id="photo-list-' + currListNumber + '"></ul>'
+            );
+            for (i = 0; i < picturesPerPage; i++) {
+                if(j < pathArray.length) {
+                    $('#photo-list-' + currListNumber).append(
+                        '<li>' +
+                            '<a href=' + pathArray[j] + ' data-lightbox="gallery">' +
+                                '<img src=' + pathArray[j] + '>' +
+                            '</a>' +
+                        '</li>'
+                    );
+                    j++;
+                }
+            }
+            $('.gallery-w-padding').append(
+                '</div>'
+            );
+            currListNumber++;
+        }
+        scrollToImageList({data: {dIndex: 0}});
+        currPhotoListIndex = 0;
+    }
+
+    /*
+     *
+     *  Name: scrollToImageList
+     *
+     *  Purpose: Scrolls to the requested image list.
+     *
+     *  Params: event: a JSON with information about the click event. Contains dIndex,
+     *  (delta index), where to scroll from the current index
+     *
+     *  Return: none
+     *
+     *  Notes: Called at the end of generateGallery, to scroll to the beginning.
+     *
+     */
     function scrollToImageList(event) {
         var photoAreaDisplayID = '#GPA' + (currPhotoListIndex + event.data.dIndex);
         if ($(photoAreaDisplayID).length != 0) {
@@ -91,10 +170,24 @@ $(document).ready(function () {
         }
     }
 
-    $('#gallery-left-arrow').click({dIndex: -1}, scrollToImageList);
-    $('#gallery-right-arrow').click({dIndex: 1}, scrollToImageList);
+    /*******************************
+     *        AJAX Requests        *
+     *******************************/
 
-    //*****Datepicker setup*****//
+    function findPictures() {
+        $.getJSON('/findpictures', {startdate: startDatePicker.datetimepicker('getDate'), enddate: endDatePicker.datetimepicker('getDate')}, function(result) {
+            console.log(result);
+        }).fail(picturesError);
+    }
+
+    function picturesError(jqXHR, status, errorThrown) {
+        alert(jqXHR.responseText);
+    }
+
+    /*******************************
+     *     Page Initialization     *
+     *******************************/
+    //datetimepicker element setup
     $('#gallery-start-date-selector').datetimepicker({
         controlType: 'select',
         oneLine: true,
@@ -103,31 +196,7 @@ $(document).ready(function () {
         controlType: 'select',
         oneLine: true,
     });
-
-    //Configuring Lightbox options
-    lightbox.option({
-        'alwaysShowNavOnTouchDevices' : true,
-        'fadeduration': 1000,
-        'imageFadeDuration': 400,
-        'wrapAround': true
-    });
-
-    //*****Element listings*****//
-    var startDatePicker = $('#gallery-start-date-selector');
-    var endDatePicker = $('#gallery-end-date-selector');
-    var findPicturesButton = $('#find-pictures-button');
-    $(findPicturesButton).click(findPictures);
-
-    //*****Request handling*****//
-    function findPictures() {
-        $.getJSON('/findpictures', {startdate: startDatePicker.datetimepicker('getDate'), enddate: endDatePicker.datetimepicker('getDate')}, function(result) {
-            console.log(result);
-        }).fail(picturesError);
-    }
-
-    //*****Error handling*****//
-    function picturesError(jqXHR, status, errorThrown) {
-        alert(jqXHR.responseText);
-    }
-
+    resizePhotoArea(); //Binds width of photo areas properly
+    generateGallery(); //Generates the first photo gallery instance
+    $("html, body").scrollTop('.nav-selected'); //Scrolls to the selected element (Gallery)
 });
