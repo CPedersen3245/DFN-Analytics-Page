@@ -1,11 +1,22 @@
 import json
 from datetime import datetime
 
-def findPictures(startdate, enddate):
-    error = False
+#
+# Name: datetimeSanityCheck
+#
+# Purpose: Sanity checks an input datetime range
+#
+# Params: startdate and enddate, 2 datetime objects
+#
+# Return: A boolean, true if input is sane and false if invalid
+#
+# Notes: none
+#
+def datetimeSanityCheck(startdate, enddate):
+    sane = True
 
     if not startdate or not enddate:
-        error = True
+        sane = False
     else:
         data = {}
         now = datetime.now()
@@ -19,12 +30,27 @@ def findPictures(startdate, enddate):
 
         #If dates are wrong way around, or either date is in the future:
         if (startdatetime >= enddatetime) or (startdatetime > now) or (enddatetime > now):
-            error = True
+            sane = False
         else:
             print 'Times are all good, boss.'
 
-    if error:
-        return None
-    else:
+        return sane
+
+#
+# Name: findPictures
+#
+# Purpose: Finds all pictures on the HDD within the specified datetime range
+#
+# Params: startdate and enddate, 2 datetime objects
+#
+# Return: An array of filenames
+#
+# Notes: none
+#
+def findPictures(startdate, enddate):
+    data = {}
+    if datetimeSanityCheck(startdate, enddate):
         data['All good,'] = 'boss.'
         return json.dumps(data)
+    else:
+        return None

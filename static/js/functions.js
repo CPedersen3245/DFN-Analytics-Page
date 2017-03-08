@@ -22,20 +22,35 @@ $(document).ready(function () {
     //Number of photos per gallery page
     var picturesPerPage = 20;
 
-    //*****jQuery element listings*****//
-    var startDatePicker = $('#gallery-start-date-selector');
-    var endDatePicker = $('#gallery-end-date-selector');
-    var findPicturesButton = $('#find-pictures-button');
+    /*******************************
+     *      Selector Listings      *
+     *******************************/
+    var galleryLink = '#gallery-link';
+    var performanceLink = '#performance-link';
+    var analyticsLink = '#analytics-link';
+    var navLinks = '#nav-links';
+    var galleryLeftArrow = '#gallery-left-arrow';
+    var galleryRightArrow = '#gallery-right-arrow';
+    var galleryWPadding = '.gallery-w-padding';
+    var gallerySlider = '.gallery-slider';
+    var galleryFeedbackSpan = '#gallery-feedback-span';
+    var galleryPhotoArea = '.gallery-photo-area';
+
+    
+    
+    var startDatePicker = '#gallery-start-date-selector';
+    var endDatePicker = '#gallery-end-date-selector';
+    var findPicturesButton = '#find-pictures-button';
 
     /*******************************
      *     Setting up callbacks    *
      *******************************/
     $(findPicturesButton).click(findPictures);
-    $('#gallery-link').click({scrollTo: '#gallery-wrapper'}, scrollToDiv);
-    $('#performance-link').click({scrollTo: '#performance-wrapper'}, scrollToDiv);
-    $('#analytics-link').click({scrollTo: '#analytics-wrapper'}, scrollToDiv);
-    $('#gallery-left-arrow').click({dIndex: -1}, scrollToImageList);
-    $('#gallery-right-arrow').click({dIndex: 1}, scrollToImageList);
+    $(galleryLink).click({scrollTo: '#gallery-wrapper'}, scrollToDiv);
+    $(performanceLink).click({scrollTo: '#performance-wrapper'}, scrollToDiv);
+    $(analyticsLink).click({scrollTo: '#analytics-wrapper'}, scrollToDiv);
+    $(galleryLeftArrow).click({dIndex: -1}, scrollToImageList);
+    $(galleryRightArrow).click({dIndex: 1}, scrollToImageList);
 
     /*******************************
      *        Responsiveness       *
@@ -62,7 +77,7 @@ $(document).ready(function () {
      *
      */
     function scrollToDiv(event) {
-        $('#nav-links li a').each(function (index) {
+        $(navLinks + ' li a').each(function (index) {
             $(this).removeClass('nav-selected');
         });
         $(event.target).addClass('nav-selected');
@@ -86,7 +101,7 @@ $(document).ready(function () {
      *
      */
     function resizePhotoArea() {
-        $('.gallery-photo-area').css('width', ($(".gallery-w-padding").width() + 'px'));
+        $(galleryPhotoArea).css('width', ($(galleryWPadding).width() + 'px'));
     }
     $(window).resize(resizePhotoArea);
 
@@ -121,8 +136,8 @@ $(document).ready(function () {
 
         while (j < pathArray.length) {
             photoLists.push("GPA" + currListNumber);
-            $(".gallery-slider").append(
-                    '<div class="gallery-photo-area" id="GPA' + currListNumber + '">' +
+            $(gallerySlider).append(
+                    '<div class="' + galleryPhotoArea + '" id="GPA' + currListNumber + '">' +
                         '<ul id="photo-list-' + currListNumber + '"></ul>'
             );
             for (i = 0; i < picturesPerPage; i++) {
@@ -137,7 +152,7 @@ $(document).ready(function () {
                     j++;
                 }
             }
-            $('.gallery-w-padding').append(
+            $(galleryWPadding).append(
                 '</div>'
             );
             currListNumber++;
@@ -164,9 +179,10 @@ $(document).ready(function () {
         var photoAreaDisplayID = '#GPA' + (currPhotoListIndex + event.data.dIndex);
         if ($(photoAreaDisplayID).length != 0) {
             currPhotoListIndex += event.data.dIndex;
-            $('.gallery-photo-area').css('display', 'none');
+            $(galleryPhotoArea).css('display', 'none');
             $(photoAreaDisplayID).css('display', 'flex');
-            $('#gallery-feedback-span').text('Page ' + (currPhotoListIndex+1) + ' of ' + $('.gallery-photo-area').length);
+            $(galleryFeedbackSpan).text('Page ' + (currPhotoListIndex+1) + ' of ' + $(galleryPhotoArea).length);
+            $(gallerySlider).scrollTop(0);
         }
     }
 
@@ -188,13 +204,13 @@ $(document).ready(function () {
      *     Page Initialization     *
      *******************************/
     //datetimepicker element setup
-    $('#gallery-start-date-selector').datetimepicker({
+    $(startDatePicker).datetimepicker({
         controlType: 'select',
-        oneLine: true,
+        oneLine: true
     });
-    $('#gallery-end-date-selector').datetimepicker({
+    $(endDatePicker).datetimepicker({
         controlType: 'select',
-        oneLine: true,
+        oneLine: true
     });
     resizePhotoArea(); //Binds width of photo areas properly
     generateGallery(); //Generates the first photo gallery instance
