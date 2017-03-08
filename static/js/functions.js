@@ -36,8 +36,6 @@ $(document).ready(function () {
     var galleryFeedbackSpan = '#gallery-feedback-span';
     var galleryPhotoArea = '.gallery-photo-area';
 
-    
-    
     var startDatePicker = '#gallery-start-date-selector';
     var endDatePicker = '#gallery-end-date-selector';
     var findPicturesButton = '#find-pictures-button';
@@ -137,7 +135,7 @@ $(document).ready(function () {
         while (j < pathArray.length) {
             photoLists.push("GPA" + currListNumber);
             $(gallerySlider).append(
-                    '<div class="' + galleryPhotoArea + '" id="GPA' + currListNumber + '">' +
+                    '<div class="' + galleryPhotoArea.replace('.', '') + '" id="GPA' + currListNumber + '">' +
                         '<ul id="photo-list-' + currListNumber + '"></ul>'
             );
             for (i = 0; i < picturesPerPage; i++) {
