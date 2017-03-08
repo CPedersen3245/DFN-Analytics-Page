@@ -3,18 +3,7 @@ $(document).ready(function () {
     /*******************************
      *          GLOBALS            *
      *******************************/
-    var pathArray = ["static/images/sample/1.jpg", "static/images/sample/2.jpg", "static/images/sample/3.jpg", "static/images/sample/4.jpg",
-        "static/images/sample/5.jpg", "static/images/sample/6.jpg", "static/images/sample/7.jpg", "static/images/sample/8.jpg",
-        "static/images/sample/9.jpg", "static/images/sample/10.jpg", "static/images/sample/11.jpg", "static/images/sample/12.jpg",
-        "static/images/sample/13.jpg", "static/images/sample/14.jpg", "static/images/sample/15.jpg", "static/images/sample/16.jpg",
-        "static/images/sample/17.jpg", "static/images/sample/18.jpg", "static/images/sample/19.jpg", "static/images/sample/20.jpg",
-        "static/images/sample/21.jpg", "static/images/sample/22.jpg", "static/images/sample/23.jpg", "static/images/sample/24.jpg",
-        "static/images/sample/1.jpg", "static/images/sample/2.jpg", "static/images/sample/3.jpg", "static/images/sample/4.jpg",
-        "static/images/sample/5.jpg", "static/images/sample/6.jpg", "static/images/sample/7.jpg", "static/images/sample/8.jpg",
-        "static/images/sample/9.jpg", "static/images/sample/10.jpg", "static/images/sample/11.jpg", "static/images/sample/12.jpg",
-        "static/images/sample/13.jpg", "static/images/sample/14.jpg", "static/images/sample/15.jpg", "static/images/sample/16.jpg",
-        "static/images/sample/17.jpg", "static/images/sample/18.jpg", "static/images/sample/19.jpg", "static/images/sample/20.jpg",
-        "static/images/sample/21.jpg", "static/images/sample/22.jpg", "static/images/sample/23.jpg", "static/images/sample/24.jpg"];
+    var pathJSON = {};
 
     //Keeps track of where in the gallery the user is
     var currPhotoListIndex = 0;
@@ -49,6 +38,41 @@ $(document).ready(function () {
     $(analyticsLink).click({scrollTo: '#analytics-wrapper'}, scrollToDiv);
     $(galleryLeftArrow).click({dIndex: -1}, scrollToImageList);
     $(galleryRightArrow).click({dIndex: 1}, scrollToImageList);
+
+    /*******************************
+     *        Datetimepicker       *
+     *******************************/
+    //datetimepicker element setup
+    $(startDatePicker).datetimepicker({
+        controlType: 'select',
+        oneLine: true,
+        hour: 12
+    }).on('input change', setEndDate);
+    $(endDatePicker).datetimepicker({
+        controlType: 'select',
+        oneLine: true,
+        hour: 12
+    });
+
+    /*
+     *
+     *  Name: setEndDate
+     *
+     *  Purpose: Sets the end date automatically to one day after initial selection
+     *
+     *  Params: event: a JSON with information about the event.
+     *
+     *  Return: none
+     *
+     *  Notes: Should only be called as a callback for the input change event for startDatePicker
+     *
+     */
+    function setEndDate(e) {
+        var startDate = $(startDatePicker).datetimepicker('getDate');
+        var tomorrow = new Date(startDate);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        $(endDatePicker).datetimepicker('setDate', tomorrow);
+    }
 
     /*******************************
      *        Responsiveness       *
@@ -120,30 +144,48 @@ $(document).ready(function () {
      *
      *  Purpose: Generates the images gallery, using the array of filenames currently in RAM
      *
-     *  Params: none
+     *  Params: A JSON object with lots of keys, in the form {(timestamp), (filepath)}
      *
      *  Return: none
      *
      *  Notes: Should only be called as a success callback from the /findpictures ajax request.
      *
      */
-    function generateGallery() {
-        var photoLists = [];
+    function generateGallery(inFiles) {
+        var numPhotos = Object.keys(inFiles).length;
         var i, j = 0;
         var currListNumber = 0;
 
-        while (j < pathArray.length) {
-            photoLists.push("GPA" + currListNumber);
+        var inFilesArray = [];
+
+        var tempJSON = {};
+        var tempFilePath;
+        var tempTimestamp;
+
+        //Create an array out of input JSON
+        $.each(inFiles, function (key, value) {
+            tempJSON = {};
+            tempJSON[key] = value;
+            inFilesArray.push(tempJSON)
+        });
+
+        $(gallerySlider).empty();
+
+        while (j < numPhotos) {
             $(gallerySlider).append(
                     '<div class="' + galleryPhotoArea.replace('.', '') + '" id="GPA' + currListNumber + '">' +
                         '<ul id="photo-list-' + currListNumber + '"></ul>'
             );
             for (i = 0; i < picturesPerPage; i++) {
-                if(j < pathArray.length) {
+                $.each(inFilesArray[j], function(key, value) {
+                    tempFilePath = value;
+                    tempTimestamp = key;
+                });
+                if(j < numPhotos) {
                     $('#photo-list-' + currListNumber).append(
                         '<li>' +
-                            '<a href=' + pathArray[j] + ' data-lightbox="gallery">' +
-                                '<img src=' + pathArray[j] + '>' +
+                            '<a href=' + tempFilePath + ' data-lightbox="gallery", data-title="Time Taken: ' + tempTimestamp +'">' +
+                                '<img src=' + tempFilePath + '>' +
                             '</a>' +
                         '</li>'
                     );
@@ -155,8 +197,8 @@ $(document).ready(function () {
             );
             currListNumber++;
         }
-        scrollToImageList({data: {dIndex: 0}});
         currPhotoListIndex = 0;
+        scrollToImageList({data: {dIndex: 0}});
     }
 
     /*
@@ -189,8 +231,9 @@ $(document).ready(function () {
      *******************************/
 
     function findPictures() {
-        $.getJSON('/findpictures', {startdate: startDatePicker.datetimepicker('getDate'), enddate: endDatePicker.datetimepicker('getDate')}, function(result) {
-            console.log(result);
+        $.getJSON('/findpictures', {startdate: $(startDatePicker).datetimepicker('getDate'), enddate: $(endDatePicker).datetimepicker('getDate')}, function(result) {
+            pathJSON = {};
+            generateGallery(result);
         }).fail(picturesError);
     }
 
@@ -201,16 +244,7 @@ $(document).ready(function () {
     /*******************************
      *     Page Initialization     *
      *******************************/
-    //datetimepicker element setup
-    $(startDatePicker).datetimepicker({
-        controlType: 'select',
-        oneLine: true
-    });
-    $(endDatePicker).datetimepicker({
-        controlType: 'select',
-        oneLine: true
-    });
     resizePhotoArea(); //Binds width of photo areas properly
-    generateGallery(); //Generates the first photo gallery instance
+    //generateGallery(); //Generates the first photo gallery instance
     $("html, body").scrollTop('.nav-selected'); //Scrolls to the selected element (Gallery)
 });

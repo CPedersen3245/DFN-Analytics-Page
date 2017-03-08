@@ -8,22 +8,43 @@ urls = ('/', 'Index',
 app = web.application(urls, globals())
 render = web.template.render('templates/')
 
-# Renders the page when the user gets the index.
+"""""
+* Name: Index.GET
+*
+* Purpose: Endpoint for finding all pictures on the HDD within the specified datetime range
+*
+* Params: startdate and enddate, 2 datetime objects
+*
+* Return: An array of filenames
+*
+* Notes: none
+"""""
 class Index:
     def GET(self):
         return render.index()
 
-# Endpoint for when the user selects a start and end date for the gallery.
-# Determines if the datetimes are valid, then finds all filepaths on the system of
-# images that fall under the date/time restrictions
+"""""
+* Name: FindPictures.GET
+*
+* Purpose: Endpoint for finding all pictures on the HDD within the specified datetime range
+*
+* Params: None, but web.input fetches startdate and enddate, 2 datetime strings
+*
+* Return: An array of filenames
+*
+* Notes: none
+"""""
 class FindPictures:
     def GET(self):
         input = web.input()
-        filepaths = analytics_controller.findPictures(input.startdate, input.enddate)
-        if filepaths is None:
-            raise web.badrequest("ERROR: Dates invalid. Please try again.")
-        else:
-            return filepaths
+        try:
+            filepaths = analytics_controller.findPictures(input.startdate, input.enddate)
+        except IOError as e:
+            raise web.notfound(e.message)
+        except SyntaxError as e:
+            raise web.badrequest(e.message)
+
+        return filepaths
 
 # Start of execution. Set working directory here if needed.
 if __name__ == '__main__':

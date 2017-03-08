@@ -495,7 +495,7 @@ button {
             display: inline-block;
             width: 50px;
             float: left;
-            margin-right: 2px; }
+            margin-right: 12px; }
           #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div .datetimepicker {
             width: 65%;
             border: 1px solid #C1C1C1; }
