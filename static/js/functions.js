@@ -1,8 +1,20 @@
+/*
+ * * * * * * * * * *
+ * Filename:    functions.js
+ *
+ * Purpose:     The javascript (and jQuery) functions for the DFN-Analytics-Page project.
+ *
+ * Copyright:   2017 Fireballs in the Sky, all rights reserved
+ * * * * * * * * * *
+*/
+
+
 $(document).ready(function () {
 
     /*******************************
      *          GLOBALS            *
      *******************************/
+    //Temp variable of all image paths and their timestamps
     var pathJSON = {};
 
     //Keeps track of where in the gallery the user is
@@ -14,7 +26,7 @@ $(document).ready(function () {
     /*******************************
      *      Selector Listings      *
      *******************************/
-    var errorSpan = '.error-span';
+    var galleryErrorSpan = '.gallery-error-span';
 
     var galleryLink = '#gallery-link';
     var performanceLink = '#performance-link';
@@ -48,12 +60,18 @@ $(document).ready(function () {
     $(startDatePicker).datetimepicker({
         controlType: 'select',
         oneLine: true,
-        hour: 12
+        hour: 12,
+        beforeShow: function() {setTimeout(function(){
+            $('.ui-datepicker').css('z-index', 100);
+            }, 0)}
     }).on('input change', setEndDate);
     $(endDatePicker).datetimepicker({
         controlType: 'select',
         oneLine: true,
-        hour: 12
+        hour: 12,
+        beforeShow: function() {setTimeout(function(){
+            $('.ui-datepicker').css('z-index', 100);
+            }, 0)}
     });
 
     /*
@@ -287,12 +305,9 @@ $(document).ready(function () {
      *
      */
     function showErrorSpan(message) {
-        $(errorSpan).text(message);
-        $(errorSpan).css('display', 'inline');
-        $(errorSpan).css('color', '#FF4136');
-        $(errorSpan).animate({
-            color: 'transparent'
-        }, 2000, 'easeInQuint', function() { $(errorSpan).css('display', 'none'); });
+        $(galleryErrorSpan).text(message);
+        var tempSpan = $(galleryErrorSpan).clone();
+        $(galleryErrorSpan).replaceWith(tempSpan);
 
     }
 

@@ -1,4 +1,21 @@
 #gallery-wrapper
+  @keyframes error-fade-out
+    0%
+      opacity: 1
+
+    100%
+      opacity: 0
+      visibility: hidden
+
+  .gallery-error-span
+    position: absolute
+    +calc(width, '100% - 240px')
+    +calc(bottom, '15% + 25px')
+    text-align: center
+    color: #FF4136
+    z-index: 100
+    animation: error-fade-out 1.5s ease-in 1 forwards
+
   .gallery-item
     position: relative
     width: 100%
@@ -117,7 +134,7 @@
               display: inline-block
               width: 50px
               float: left
-              margin-right: 12px
+              margin-right: 10px
 
 
             .datetimepicker
@@ -136,6 +153,11 @@
 //Vertical mobile styles
 @media screen and (max-width: 550px)
   #gallery-wrapper
+
+    .gallery-error-span
+      left: 0
+      width: 100%
+
 
     .gallery-item
 
@@ -159,8 +181,9 @@
 //Horizontal mobile styles
 @media screen and (max-height: 450px)
   #gallery-wrapper
-    h1
-      display: none
+
+    .gallery-error-span
+      +calc(bottom, '15% + 5px')
 
     .gallery-item
       height: 100%
@@ -181,3 +204,9 @@
 
           .gallery-date-area-left
             margin-right: 0
+
+            label
+              font-size: 80%
+
+            input
+              font-size: 80%

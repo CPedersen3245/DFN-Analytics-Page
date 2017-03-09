@@ -217,7 +217,7 @@ body {
   font-weight: 300;
   font-size: 20px; }
   body .widget-wrapper .widget-heading {
-    font-size: 3.5vh;
+    font-size: 3.2vh;
     margin: 5px 0px 5px 5px;
     height: -moz-calc(7% - 10px);
     height: -webkit-calc(7% - 10px);
@@ -244,8 +244,8 @@ body {
   color: #C1C1C1;
   font-size: 15px; }
 
-.error-span {
-  font-size: 18px; }
+.gallery-error-span {
+  font-size: 2vw; }
 
 @media screen and (max-width: 550px) {
   body {
@@ -253,11 +253,17 @@ body {
     font-size: 14px; }
     body nav #hostname {
       color: black;
-      font-size: 15px; } }
+      font-size: 15px; }
+
+  .gallery-error-span {
+    font-size: 12px; } }
 @media screen and (max-height: 450px) {
   body {
     font-family: "Roboto", sans-serif;
-    font-size: 14px; } }
+    font-size: 14px; }
+
+  .gallery-error-span {
+    font-size: 2.2vw; } }
 button {
   padding: 10px 20px;
   color: white;
@@ -370,6 +376,24 @@ button {
       position: absolute;
       top: 0px;
       right: 10px; } }
+@keyframes error-fade-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    visibility: hidden; } }
+#gallery-wrapper .gallery-error-span {
+  position: absolute;
+  width: -moz-calc(100% - 240px);
+  width: -webkit-calc(100% - 240px);
+  width: calc(100% - 240px);
+  bottom: -moz-calc(15% + 25px);
+  bottom: -webkit-calc(15% + 25px);
+  bottom: calc(15% + 25px);
+  text-align: center;
+  color: #FF4136;
+  z-index: 100;
+  animation: error-fade-out 1.5s ease-in 1 forwards; }
 #gallery-wrapper .gallery-item {
   position: relative;
   width: 100%;
@@ -499,7 +523,7 @@ button {
             display: inline-block;
             width: 50px;
             float: left;
-            margin-right: 12px; }
+            margin-right: 10px; }
           #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div .datetimepicker {
             width: 65%;
             border: 1px solid #C1C1C1; }
@@ -513,6 +537,9 @@ button {
             background-color: #C1C1C1; }
 
 @media screen and (max-width: 550px) {
+  #gallery-wrapper .gallery-error-span {
+    left: 0;
+    width: 100%; }
   #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area ul {
     width: 95%; }
     #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area ul li {
@@ -520,8 +547,10 @@ button {
   #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left {
     margin-right: 0; } }
 @media screen and (max-height: 450px) {
-  #gallery-wrapper h1 {
-    display: none; }
+  #gallery-wrapper .gallery-error-span {
+    bottom: -moz-calc(15% + 5px);
+    bottom: -webkit-calc(15% + 5px);
+    bottom: calc(15% + 5px); }
   #gallery-wrapper .gallery-item {
     height: 100%; }
     #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area ul {
@@ -529,18 +558,16 @@ button {
       #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area ul li {
         width: 31%; }
     #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left {
-      margin-right: 0; } }
+      margin-right: 0; }
+      #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left label {
+        font-size: 80%; }
+      #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left input {
+        font-size: 80%; } }
 html .page-wrapper, body .page-wrapper {
   height: 100%; }
   html .page-wrapper .content-wrapper, body .page-wrapper .content-wrapper {
     height: 100%;
     margin-left: 230px; }
-    html .page-wrapper .content-wrapper .error-span, body .page-wrapper .content-wrapper .error-span {
-      position: fixed;
-      top: 10px;
-      right: 20px;
-      color: #FF4136;
-      display: none; }
     html .page-wrapper .content-wrapper .widget-wrapper, body .page-wrapper .content-wrapper .widget-wrapper {
       height: 100%;
       background-color: #F2F2F2;
@@ -561,6 +588,8 @@ html .page-wrapper, body .page-wrapper {
         margin-top: 15vh; } }
 @media screen and (max-height: 450px) {
   body .page-wrapper .content-wrapper .widget-wrapper {
-    padding: 10px; } }
+    padding: 10px; }
+    body .page-wrapper .content-wrapper .widget-wrapper h1 {
+      display: none; } }
 
 /*# sourceMappingURL=main.css.map */

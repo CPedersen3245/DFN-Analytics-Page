@@ -1,3 +1,13 @@
+"""""
+ * * * * * * * * * *
+ * Filename:    analytics_controller.py
+ *
+ * Purpose:     Responsible for all backend operations the server requires to be done.
+ *
+ * Copyright:   2017 Fireballs in the Sky, all rights reserved
+ * * * * * * * * * *
+"""""
+
 import json
 import constants
 import commands

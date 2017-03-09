@@ -1,3 +1,13 @@
+"""""
+ * * * * * * * * * *
+ * Filename:    web-server.py
+ *
+ * Purpose:     The web-server backend for the DFN-Analytics-Page project
+ *
+ * Copyright:   2017 Fireballs in the Sky, all rights reserved
+ * * * * * * * * * *
+"""""
+
 import web
 import analytics_controller
 
