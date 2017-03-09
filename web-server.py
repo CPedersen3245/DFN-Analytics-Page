@@ -36,13 +36,15 @@ class Index:
 """""
 class FindPictures:
     def GET(self):
-        input = web.input()
         try:
+            input = web.input()
             filepaths = analytics_controller.findPictures(input.startdate, input.enddate)
         except IOError as e:
-            raise web.notfound(e.message)
+            raise web.NotFound(e.message)
         except SyntaxError as e:
-            raise web.badrequest(e.message)
+            raise web.BadRequest(e.message)
+        except OSError as e:
+            raise web.InternalError(e.message)
 
         return filepaths
 

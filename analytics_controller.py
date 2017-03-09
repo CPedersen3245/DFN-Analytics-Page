@@ -1,9 +1,22 @@
 import json
-import re
+import constants
 import commands
-import calendar
 import time
 from datetime import datetime, date, timedelta
+
+"""""
+* Name: doConsoleCommand
+*
+* Purpose: Performs a bash command in terminal
+*
+* Params: command, a string of a bash command to perform
+*
+* Return: A list, where [0] is the status code from the command, and [1] being the output string.
+*
+* Notes: none
+"""""
+def doConsoleCommand(command):
+    return commands.getstatusoutput(command)
 
 """""
 * Name: datetimeSanityCheck
@@ -16,25 +29,25 @@ from datetime import datetime, date, timedelta
 *
 * Notes: none
 """""
-def datetimeSanityCheck(startdate, enddate):
+def datetimeSanityCheck(startDate, endDate):
     sane = True
 
-    if not startdate or not enddate:
+    if not startDate or not endDate:
         sane = False
     else:
         now = datetime.now()
 
         # Strip away timezones and make into python datetime objects
-        startdate = ' '.join(startdate.split(' ')[:-2])
-        enddate = ' '.join(enddate.split(' ')[:-2])
-        startdatetime = datetime.strptime(startdate, '%a %b %d %Y %H:%M:%S')
-        enddatetime = datetime.strptime(enddate, '%a %b %d %Y %H:%M:%S')
+        startDate = ' '.join(startDate.split(' ')[:-2])
+        endDate = ' '.join(endDate.split(' ')[:-2])
+        startdatetime = datetime.strptime(startDate, '%a %b %d %Y %H:%M:%S')
+        enddatetime = datetime.strptime(endDate, '%a %b %d %Y %H:%M:%S')
 
         # If dates are wrong way around, or either date is in the future:
         if (startdatetime >= enddatetime) or (startdatetime > now) or (enddatetime > now):
             sane = False
 
-        return sane
+    return sane
 
 """""
 * Name: findPictures
@@ -47,20 +60,22 @@ def datetimeSanityCheck(startdate, enddate):
 *
 * Notes: none
 """""
-def findPictures(startdate, enddate):
+
+
+def findPictures(startDate, endDate):
     data = {}
     # If datetimes valid, begin finding pictures
-    if datetimeSanityCheck(startdate, enddate):
+    if datetimeSanityCheck(startDate, endDate):
         # Strip away timezones and make into python datetime objects
-        startdate = ' '.join(startdate.split(' ')[:-2])
-        enddate = ' '.join(enddate.split(' ')[:-2])
-        startdatetime = datetime.strptime(startdate, '%a %b %d %Y %H:%M:%S')
-        enddatetime = datetime.strptime(enddate, '%a %b %d %Y %H:%M:%S')
+        startDate = ' '.join(startDate.split(' ')[:-2])
+        endDate = ' '.join(endDate.split(' ')[:-2])
+        startdatetime = datetime.strptime(startDate, '%a %b %d %Y %H:%M:%S')
+        enddatetime = datetime.strptime(endDate, '%a %b %d %Y %H:%M:%S')
 
         # For each date between (And inclusive), print the date.
-        startdate = date(startdatetime.year, startdatetime.month, startdatetime.day)
-        enddate = date(enddatetime.year, enddatetime.month, enddatetime.day)
-        datedelta = enddate - startdate
+        startDate = date(startdatetime.year, startdatetime.month, startdatetime.day)
+        endDate = date(enddatetime.year, enddatetime.month, enddatetime.day)
+        datedelta = endDate - startDate
 
         # Array is for storing days between (inclusive) selected dates.
         days = []
@@ -68,44 +83,55 @@ def findPictures(startdate, enddate):
 
         # Find all dates in range in the form YYYY-MM-DD
         for i in range(datedelta.days + 1):
-            days.append(startdate + timedelta(days=i))
+            days.append(startDate + timedelta(days=i))
 
         # For each date in the given range, find directories with this date in the filename
-        commandTemplate = "find /data[0-3] -type d -name '*{0}-{1}-{2}*' | grep -v 'test\|video'"
-
         for day in days:
-            commandOutput = commands.getstatusoutput(commandTemplate.format(day.year, str(day.month).zfill(2), str(day.day).zfill(2)))
+            commandOutput = doConsoleCommand(constants.findPicturesDirectorySearch.format(day.year, str(day.month).zfill(2), str(day.day).zfill(2)))
             commandOutputExitCode = commandOutput[0]
             if commandOutputExitCode == 0:
                 commandOutputText = commandOutput[1]
                 directories.extend(commandOutputText.split('\n'))
-        if len(directories) == 0:
-            raise IOError('ERROR: No directories found between the specified range.')
+            else:
+                raise IOError(constants.findPicturesNoDirectoryError)
 
         # For each directory, find all NEF files in it, along with their timestamps.
         for directory in directories:
             fileList = commands.getoutput('ls ' + directory).split("\n")
             for fileName in fileList:
-                if '.jpg' in fileName:
+                
+                # Search for NEF files
+                if '.NEF' in fileName:
                     filePathNoStatic = (directory + '/' + fileName)
                     filePath = ('/static' + filePathNoStatic)
+                    thumbnailFilePath = filePath.replace('NEF', '-preview3.jpg')
+                    thumbnailFilePathNoStatic = filePathNoStatic.replace('NEF', '-preview3.jpg')
 
                     # Get unix timestamp for file creation
-                    commandTemplate = "find " + filePathNoStatic + " -exec stat -c%Y {} \;"
-                    fullTimestampEpoch = int(time.mktime(time.localtime(int(commands.getstatusoutput(commandTemplate)[1]))))
-                    fullTimestampDatetime = datetime.fromtimestamp(fullTimestampEpoch)
-                    if startdatetime < fullTimestampDatetime < enddatetime:
-                        fullTimestamp = datetime.strftime(fullTimestampDatetime, '%d-%m-%Y at %H:%M:%S %Z')
+                    commandOutput = doConsoleCommand(constants.findPicturesGetTimestamp.format(filePathNoStatic))
+                    if commandOutput[0] == 0:
+                        fullTimestampEpoch = int(time.mktime(time.localtime(int(commandOutput[1]))))
+                        fullTimestampDatetime = datetime.fromtimestamp(fullTimestampEpoch)
+                        
+                        # If timestamp is between those dates, fetch the thumbnail and dump it to JSON
+                        if startdatetime < fullTimestampDatetime < enddatetime:
+                            fullTimestamp = datetime.strftime(fullTimestampDatetime, '%d-%m-%Y at %H:%M:%S %Z')
 
-                        # Write to JSON: {(timestamp), (filepath)}
-                        data[fullTimestamp] = filePath
+                            # Extract the thumbnail, unless it already exists
+                            if doConsoleCommand(constants.findPicturesCheckThumbnail.format(directory, thumbnailFilePathNoStatic))[0] == 0:
+                                commandOutput = doConsoleCommand(constants.findPicturesExtractThumbnail.format(directory, filePathNoStatic))
+                                if commandOutput[0] == 127:
+                                    raise OSError(constants.wrongOSError)
 
-
+                            # Write to JSON: {(timestamp), (filepath)}
+                            data[fullTimestamp] = thumbnailFilePath
+                    else:
+                        raise OSError(constants.wrongOSError)
 
         if not data:
-            raise IOError('ERROR: Interval control ran for this range, but no .NEF files were found.')
+            raise IOError(constants.findPicturesNoNEFError)
 
         return json.dumps(data, sort_keys=True)
 
     else:
-        raise SyntaxError('ERROR: Dates invalid. Please try again.')
+        raise SyntaxError(constants.findPicturesInvalidDatesError)
