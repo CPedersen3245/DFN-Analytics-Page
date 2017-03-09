@@ -214,6 +214,7 @@ button {
 
 body {
   font-family: "Roboto", sans-serif;
+  font-weight: 300;
   font-size: 20px; }
   body .widget-wrapper .widget-heading {
     font-size: 3.5vh;
@@ -242,6 +243,9 @@ body {
 #gallery-feedback-span {
   color: #C1C1C1;
   font-size: 15px; }
+
+.error-span {
+  font-size: 18px; }
 
 @media screen and (max-width: 550px) {
   body {
@@ -531,6 +535,12 @@ html .page-wrapper, body .page-wrapper {
   html .page-wrapper .content-wrapper, body .page-wrapper .content-wrapper {
     height: 100%;
     margin-left: 230px; }
+    html .page-wrapper .content-wrapper .error-span, body .page-wrapper .content-wrapper .error-span {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      color: #FF4136;
+      display: none; }
     html .page-wrapper .content-wrapper .widget-wrapper, body .page-wrapper .content-wrapper .widget-wrapper {
       height: 100%;
       background-color: #F2F2F2;

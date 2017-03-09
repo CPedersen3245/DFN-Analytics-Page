@@ -14,6 +14,8 @@ $(document).ready(function () {
     /*******************************
      *      Selector Listings      *
      *******************************/
+    var errorSpan = '.error-span';
+
     var galleryLink = '#gallery-link';
     var performanceLink = '#performance-link';
     var analyticsLink = '#analytics-link';
@@ -230,6 +232,19 @@ $(document).ready(function () {
      *        AJAX Requests        *
      *******************************/
 
+    /*
+     *
+     *  Name: findPictures
+     *
+     *  Purpose: AJAX request for finding all picture URLs between two dates
+     *
+     *  Params: None, but the function fetches the starting date and ending date objects from the datetimepickers.
+     *
+     *  Return: none
+     *
+     *  Notes: On success of request,
+     *
+     */
     function findPictures() {
         $.getJSON('/findpictures', {startdate: $(startDatePicker).datetimepicker('getDate'), enddate: $(endDatePicker).datetimepicker('getDate')}, function(result) {
             pathJSON = {};
@@ -237,8 +252,48 @@ $(document).ready(function () {
         }).fail(picturesError);
     }
 
+    /*******************************
+     *        Error Handling       *
+     *******************************/
+
+    /*
+     *
+     *  Name: picturesError
+     *
+     *  Purpose: Error handler for findPictures
+     *
+     *  Params: jqXHR (the http response), status (the error code), errorThrown (other information about the event)
+     *
+     *  Return: none
+     *
+     *  Notes: none
+     *
+     */
     function picturesError(jqXHR, status, errorThrown) {
-        alert(jqXHR.responseText);
+        showErrorSpan(jqXHR.responseText);
+    }
+
+    /*
+     *
+     *  Name: showErrorSpan
+     *
+     *  Purpose: Briefly shows an error message on the screen, before fading.
+     *
+     *  Params: A string, to display.
+     *
+     *  Return: none
+     *
+     *  Notes: none
+     *
+     */
+    function showErrorSpan(message) {
+        $(errorSpan).text(message);
+        $(errorSpan).css('display', 'inline');
+        $(errorSpan).css('color', '#FF4136');
+        $(errorSpan).animate({
+            color: 'transparent'
+        }, 2000, 'easeInQuint', function() { $(errorSpan).css('display', 'none'); });
+
     }
 
     /*******************************
