@@ -60,8 +60,6 @@ def datetimeSanityCheck(startDate, endDate):
 *
 * Notes: none
 """""
-
-
 def findPictures(startDate, endDate):
     data = {}
     # If datetimes valid, begin finding pictures
@@ -89,11 +87,13 @@ def findPictures(startDate, endDate):
         for day in days:
             commandOutput = doConsoleCommand(constants.findPicturesDirectorySearch.format(day.year, str(day.month).zfill(2), str(day.day).zfill(2)))
             commandOutputExitCode = commandOutput[0]
+            print constants.findPicturesDirectorySearch.format(day.year, str(day.month).zfill(2), str(day.day).zfill(2))
             if commandOutputExitCode == 0:
                 commandOutputText = commandOutput[1]
                 directories.extend(commandOutputText.split('\n'))
-            else:
-                raise IOError(constants.findPicturesNoDirectoryError)
+
+        if not directories:
+            raise IOError(constants.findPicturesNoDirectoryError)
 
         # For each directory, find all NEF files in it, along with their timestamps.
         for directory in directories:
@@ -118,7 +118,7 @@ def findPictures(startDate, endDate):
                             fullTimestamp = datetime.strftime(fullTimestampDatetime, '%d-%m-%Y at %H:%M:%S %Z')
 
                             # Extract the thumbnail, unless it already exists
-                            if doConsoleCommand(constants.findPicturesCheckThumbnail.format(directory, thumbnailFilePathNoStatic))[0] == 0:
+                            if doConsoleCommand(constants.findPicturesCheckThumbnail.format(directory, thumbnailFilePathNoStatic))[0] == 1:
                                 commandOutput = doConsoleCommand(constants.findPicturesExtractThumbnail.format(directory, filePathNoStatic))
                                 if commandOutput[0] == 127:
                                     raise OSError(constants.wrongOSError)
