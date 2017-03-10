@@ -100,8 +100,8 @@ $(document).ready(function () {
 
     //*****Fixing keyboard resize issue on mobile*****//
     $(window).bind('resize', function (e) {
-        $('body').css('height', '100vh');
-        $('body').css('width', '100vw');
+        $('html, body').css('height', $(window).height);
+        $('html, body').css('width', $(window).height);
     });
 
     /*

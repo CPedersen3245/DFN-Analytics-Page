@@ -202,8 +202,8 @@ th {
   padding: 0; }
 
 html, body {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   background-color: #F2F2F2; }
 
 body {
@@ -387,9 +387,9 @@ button {
   width: -moz-calc(100% - 240px);
   width: -webkit-calc(100% - 240px);
   width: calc(100% - 240px);
-  bottom: -moz-calc(15% + 25px);
-  bottom: -webkit-calc(15% + 25px);
-  bottom: calc(15% + 25px);
+  bottom: -moz-calc(15% + 20px);
+  bottom: -webkit-calc(15% + 20px);
+  bottom: calc(15% + 20px);
   text-align: center;
   color: #FF4136;
   z-index: 100;
@@ -547,10 +547,6 @@ button {
   #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left {
     margin-right: 0; } }
 @media screen and (max-height: 450px) {
-  #gallery-wrapper .gallery-error-span {
-    bottom: -moz-calc(15% + 5px);
-    bottom: -webkit-calc(15% + 5px);
-    bottom: calc(15% + 5px); }
   #gallery-wrapper .gallery-item {
     height: 100%; }
     #gallery-wrapper .gallery-item .gallery-w-padding .gallery-slider .gallery-photo-area ul {
