@@ -316,5 +316,5 @@ $(document).ready(function () {
      *******************************/
     resizePhotoArea(); //Binds width of photo areas properly
     //generateGallery(); //Generates the first photo gallery instance
-    $("html, body").scrollTop('.nav-selected'); //Scrolls to the selected element (Gallery)
+    $(performanceLink).click(); //Scrolls to the selected element (Gallery)
 });
