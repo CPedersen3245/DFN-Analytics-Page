@@ -114,8 +114,9 @@ def findPictures(startDate, endDate):
                 if '.NEF' in fileName:
                     filePathNoStatic = (directory + '/' + fileName)
                     filePath = ('/static' + filePathNoStatic)
-                    thumbnailFilePath = filePath.replace('NEF', '-preview3.jpg')
-                    thumbnailFilePathNoStatic = filePathNoStatic.replace('NEF', '-preview3.jpg')
+                    thumbnailFileName = fileName.replace('.NEF', '-preview3.jpg')
+                    thumbnailFilePath = '/static' + directory + '/' + thumbnailFileName # filePath.replace('.NEF', '-preview3.jpg')
+                    thumbnailFilePathNoStatic = filePathNoStatic.replace('.NEF', '-preview3.jpg')
 
                     # Get unix timestamp for file creation
                     commandOutput = doConsoleCommand(constants.findPicturesGetTimestamp.format(filePathNoStatic))
@@ -128,7 +129,11 @@ def findPictures(startDate, endDate):
                             fullTimestamp = datetime.strftime(fullTimestampDatetime, '%d-%m-%Y at %H:%M:%S %Z')
 
                             # Extract the thumbnail, unless it already exists
-                            if doConsoleCommand(constants.findPicturesCheckThumbnail.format(directory, thumbnailFilePathNoStatic))[0] == 1:
+                            print "CHECKING:"
+                            print doConsoleCommand(constants.findPicturesCheckThumbnail.format(directory, thumbnailFileName))
+                            if doConsoleCommand(constants.findPicturesCheckThumbnail.format(directory, thumbnailFileName))[1] == "":
+                                print "MAKING THUMBNAIL: "
+                                print constants.findPicturesExtractThumbnail.format(directory, filePathNoStatic)
                                 commandOutput = doConsoleCommand(constants.findPicturesExtractThumbnail.format(directory, filePathNoStatic))
                                 if commandOutput[0] == 127:
                                     raise OSError(constants.wrongOSError)

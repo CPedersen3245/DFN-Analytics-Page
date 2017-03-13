@@ -264,7 +264,7 @@ body {
 
   .gallery-error-span {
     font-size: 2.2vw; } }
-button {
+.basic-button {
   padding: 10px 20px;
   color: white;
   background-color: #E84C1E;
@@ -276,12 +276,12 @@ button {
   box-shadow: 0px 3px 1px #C1C1C1;
   white-space: nowrap;
   margin: 2px; }
-  button:hover {
+  .basic-button:hover {
     background-color: #B93C18; }
-  button:active {
+  .basic-button:active {
     transform: translateY(2px);
     box-shadow: 0px 1px 1px #C1C1C1; }
-  button:focus {
+  .basic-button:focus {
     outline: 0; }
 
 .side-nav {
@@ -527,14 +527,14 @@ button {
           #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div .datetimepicker {
             width: 65%;
             border: 1px solid #C1C1C1; }
-          #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left div:before {
-            content: "";
-            height: 1px;
-            width: 90%;
-            position: absolute;
-            top: 0;
-            left: 5%;
-            background-color: #C1C1C1; }
+        #gallery-wrapper .gallery-item .gallery-w-padding .gallery-date-area .gallery-date-area-left:before {
+          content: "";
+          height: 1px;
+          width: 90%;
+          position: absolute;
+          top: 0;
+          left: 5%;
+          background-color: #C1C1C1; }
 
 @media screen and (max-width: 550px) {
   #gallery-wrapper .gallery-error-span {
@@ -582,6 +582,25 @@ button {
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px; }
+    #performance-wrapper .performance-item .performance-w-padding #performance-canvas {
+      width: 100%;
+      height: 90%; }
+    #performance-wrapper .performance-item .performance-w-padding .performance-footer {
+      position: relative;
+      width: 100%;
+      height: 10%;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      justify-content: center; }
+      #performance-wrapper .performance-item .performance-w-padding .performance-footer:before {
+        content: "";
+        height: 1px;
+        width: 90%;
+        position: absolute;
+        top: 0;
+        left: 5%;
+        background-color: #C1C1C1; }
 
 html .page-wrapper, body .page-wrapper {
   height: 100%; }

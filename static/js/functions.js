@@ -21,7 +21,7 @@ $(document).ready(function () {
     var currPhotoListIndex = 0;
 
     //Number of photos per gallery page
-    var picturesPerPage = 20;
+    var picturesPerPage = 30;
 
     /*******************************
      *      Selector Listings      *

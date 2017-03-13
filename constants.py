@@ -12,7 +12,7 @@
 
 # Console Commands
 findPicturesDirectorySearch = "find /data[0-3] -type d -name '*{0}-{1}-{2}*' | grep -v 'test\|video'"
-findPicturesGetTimestamp = "find {0} -exec stat -c%Y {} \;"
+findPicturesGetTimestamp = "find {0} -exec stat -c%Y {{}} \;"
 findPicturesCheckThumbnail = "find {0} -name '{1}'"
 findPicturesExtractThumbnail = 'exiv2 -ep3 -l {0} {1}'
 
