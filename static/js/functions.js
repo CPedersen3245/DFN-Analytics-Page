@@ -282,12 +282,21 @@ $(document).ready(function () {
      *
      */
     function findPictures() {
+        //GUI shows loading routine
         $(gallerySlider).empty();
         $(gallerySlider).append(
             '<img src="static/images/loading.gif" class="gallery-loading-image">'
         );
+
+        //Disable left/right links
+        $(galleryLeftArrow).unbind('click');
+        $(galleryRightArrow).unbind('click');
         $(galleryFeedbackSpan).text('No images to display.');
+
+        //Go get those images, son. Godspeed.
         $.getJSON('/findpictures', {startdate: $(startDatePicker).datetimepicker('getDate'), enddate: $(endDatePicker).datetimepicker('getDate')}, function(result) {
+            $(galleryLeftArrow).click({dIndex: -1}, scrollToImageList);
+            $(galleryRightArrow).click({dIndex: 1}, scrollToImageList);
             generateGallery(result);
         }).fail(picturesError);
     }
@@ -310,7 +319,9 @@ $(document).ready(function () {
      *
      */
     function picturesError(jqXHR, status, errorThrown) {
-        $(gallerySlider).empty();
+        $('.gallery-loading-image').remove();
+        $(galleryLeftArrow).click({dIndex: -1}, scrollToImageList);
+        $(galleryRightArrow).click({dIndex: 1}, scrollToImageList);
         showErrorSpan(jqXHR.responseText);
     }
 
