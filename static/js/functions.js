@@ -14,11 +14,11 @@ $(document).ready(function () {
     /*******************************
      *          GLOBALS            *
      *******************************/
-    //Temp variable of all image paths and their timestamps
-    var pathJSON = {};
-
     //Keeps track of where in the gallery the user is
     var currPhotoListIndex = 0;
+
+    //Keeps track of all photo list HTML to be later rendered
+    var photoListDirectory = [];
 
     //Number of photos per gallery page
     var picturesPerPage = 30;
@@ -172,10 +172,6 @@ $(document).ready(function () {
      *
      */
     function generateGallery(inFiles) {
-        var numPhotos = Object.keys(inFiles).length;
-        var i, j = 0;
-        var currListNumber = 0;
-
         var inFilesArray = [];
 
         var tempJSON = {};
@@ -190,35 +186,51 @@ $(document).ready(function () {
         });
 
         $(gallerySlider).empty();
+        photoListDirectory = [];
 
-        while (j < numPhotos) {
-            $(gallerySlider).append(
-                    '<div class="' + galleryPhotoArea.replace('.', '') + '" id="GPA' + currListNumber + '">' +
-                        '<ul id="photo-list-' + currListNumber + '"></ul>'
-            );
-            for (i = 0; i < picturesPerPage; i++) {
-                $.each(inFilesArray[j], function(key, value) {
+        var numPhotos = Object.keys(inFiles).length;
+        var totalPhotoCount = 0;
+        var currPhotoList = 0;
+
+        photoListDirectory.push('Pranked');
+        photoListDirectory[0] += 'memed';
+        console.log(photoListDirectory);
+        photoListDirectory = [];
+
+        //For every photo in the photo array
+        while (totalPhotoCount < numPhotos) {
+            //Create the start of the photo list HTML
+            photoListDirectory.push(
+                '<div class="' + galleryPhotoArea.replace('.', '') + '" id="GPA' + currPhotoList + '">' +
+                    '<ul id="photo-list-' + currPhotoList + '">');
+            //For each photo in the photo area, max cap is picturesPerPage
+            for (var photoInArea = 0; photoInArea < picturesPerPage; photoInArea++) {
+                //Retrieve single photo data point from array
+                $.each(inFilesArray[totalPhotoCount], function (key, value) {
                     tempFilePath = value;
                     tempTimestamp = key;
                 });
-                if(j < numPhotos) {
-                    $('#photo-list-' + currListNumber).append(
+                //Append photo item to current photo list only if there are photos remaining
+                if (totalPhotoCount < numPhotos) {
+                    photoListDirectory[currPhotoList] +=
                         '<li>' +
-                            '<a href=' + tempFilePath + ' data-lightbox="gallery", data-title="Time Taken: ' + tempTimestamp +'">' +
+                            '<a href=' + tempFilePath + ' data-lightbox="gallery", data-title="Time Taken: ' + tempTimestamp + '">' +
                                 '<img src=' + tempFilePath + '>' +
                             '</a>' +
-                        '</li>'
-                    );
-                    j++;
+                        '</li>';
                 }
+                //Move to next photo
+                totalPhotoCount++;
             }
-            $(galleryWPadding).append(
-                '</div>'
-            );
-            currListNumber++;
+            //End the list, and the photo area
+            photoListDirectory[currPhotoList] += '</ul></div>';
+            currPhotoList++;
         }
-        currPhotoListIndex = 0;
-        scrollToImageList({data: {dIndex: 0}});
+        if(photoListDirectory[0] != null) {
+            $(gallerySlider).append(photoListDirectory[0]);
+            currPhotoListIndex = 0;
+            scrollToImageList({data: {dIndex: 0}});
+        }
     }
 
     /*
@@ -237,11 +249,17 @@ $(document).ready(function () {
      */
     function scrollToImageList(event) {
         var photoAreaDisplayID = '#GPA' + (currPhotoListIndex + event.data.dIndex);
-        if ($(photoAreaDisplayID).length != 0) {
+        //If it's not in the directory, get outta here.
+        if (photoListDirectory[currPhotoListIndex + event.data.dIndex] != null) {
             currPhotoListIndex += event.data.dIndex;
+            //If not already on the page, render it.
+            if ($(photoAreaDisplayID).length == 0) {
+                $(gallerySlider).append(photoListDirectory[currPhotoListIndex]);
+            }
+            //Then, "scroll" to the photo area.
             $(galleryPhotoArea).css('display', 'none');
             $(photoAreaDisplayID).css('display', 'flex');
-            $(galleryFeedbackSpan).text('Page ' + (currPhotoListIndex+1) + ' of ' + $(galleryPhotoArea).length);
+            $(galleryFeedbackSpan).text('Page ' + (currPhotoListIndex+1) + ' of ' + photoListDirectory.length);
             $(gallerySlider).scrollTop(0);
         }
     }
@@ -260,12 +278,16 @@ $(document).ready(function () {
      *
      *  Return: none
      *
-     *  Notes: On success of request,
+     *  Notes: On success of request, it will generate the new gallery and show the 1st page.
      *
      */
     function findPictures() {
+        $(gallerySlider).empty();
+        $(gallerySlider).append(
+            '<img src="static/images/loading.gif" class="gallery-loading-image">'
+        );
+        $(galleryFeedbackSpan).text('No images to display.');
         $.getJSON('/findpictures', {startdate: $(startDatePicker).datetimepicker('getDate'), enddate: $(endDatePicker).datetimepicker('getDate')}, function(result) {
-            pathJSON = {};
             generateGallery(result);
         }).fail(picturesError);
     }
@@ -288,6 +310,7 @@ $(document).ready(function () {
      *
      */
     function picturesError(jqXHR, status, errorThrown) {
+        $(gallerySlider).empty();
         showErrorSpan(jqXHR.responseText);
     }
 
@@ -315,6 +338,5 @@ $(document).ready(function () {
      *     Page Initialization     *
      *******************************/
     resizePhotoArea(); //Binds width of photo areas properly
-    //generateGallery(); //Generates the first photo gallery instance
     $(performanceLink).click(); //Scrolls to the selected element (Gallery)
 });
